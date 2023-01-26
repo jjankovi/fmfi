@@ -5,6 +5,7 @@ import sk.fmfi.repository.FeeRepository;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +21,7 @@ public class FeeServiceBean implements FeeService {
     }
 
     @Override
+    @Transactional(Transactional.TxType.REQUIRED)
     public Fee createFee(String transactionId, String acno, BigDecimal transactionAmount) {
         Fee fee = new Fee();
         fee.setTransactionId(transactionId);
@@ -35,11 +37,13 @@ public class FeeServiceBean implements FeeService {
     }
 
     @Override
+    @Transactional(Transactional.TxType.NOT_SUPPORTED)
     public List<Fee> getAllFees() {
         return feeRepository.listAll();
     }
 
     @Override
+    @Transactional(Transactional.TxType.NOT_SUPPORTED)
     public List<Fee> getFeesForAcno(String acno) {
         return feeRepository.listForAcno(acno);
     }
