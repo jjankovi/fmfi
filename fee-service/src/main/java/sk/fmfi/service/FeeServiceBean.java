@@ -1,5 +1,6 @@
 package sk.fmfi.service;
 
+import lombok.extern.log4j.Log4j2;
 import sk.fmfi.model.Fee;
 import sk.fmfi.repository.FeeRepository;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RequestScoped
+@Log4j2
 public class FeeServiceBean implements FeeService {
 
     private final FeeRepository feeRepository;
@@ -23,14 +25,16 @@ public class FeeServiceBean implements FeeService {
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
     public Fee createFee(String transactionId, String acno, BigDecimal transactionAmount) {
+        log.info("Creating fee for transactionId={}, acno={}, transactionAmount={}", transactionId, acno, transactionAmount);
+
         Fee fee = new Fee();
         fee.setTransactionId(transactionId);
         fee.setAcno(acno);
-        fee.setPostingDate(LocalDateTime.now());
-
-        // TODO nejaka logika podla typu transakcie a vysky?
-        fee.setAmount(BigDecimal.ZERO);
-
+        fee.setCreationDate(LocalDateTime.now());
+        fee.setAmount(BigDecimal.valueOf(0.01));
+        if (transactionAmount.compareTo(BigDecimal.valueOf(10000l)) > 0) {
+            fee.setAmount(BigDecimal.valueOf(2l));
+        }
         feeRepository.persist(fee);
 
         return fee;
