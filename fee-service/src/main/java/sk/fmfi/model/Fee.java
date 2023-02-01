@@ -31,6 +31,6 @@ public class Fee {
     private BigDecimal amount;
 
     @Column
-    private LocalDateTime postingDate;
+    private LocalDateTime creationDate;
 
 }
