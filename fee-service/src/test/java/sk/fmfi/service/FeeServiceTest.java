@@ -2,7 +2,6 @@ package sk.fmfi.service;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import sk.fmfi.model.Fee;
 import sk.fmfi.repository.FeeRepository;
@@ -24,14 +23,21 @@ public class FeeServiceTest {
     private FeeRepository feeRepository;
 
     @Test
-    public void testCreateFee() {
+    public void testCreateFeeSmallTranaction() {
         Fee fee = feeService.createFee("aaa-bbb", "4006064147", BigDecimal.TEN);
 
         assertNotNull(fee);
         assertThat(fee.getTransactionId(), is("aaa-bbb"));
-        assertThat(fee.getAmount(), Matchers.not(BigDecimal.TEN));
+        assertThat(fee.getAmount(), is(BigDecimal.valueOf(0.01)));
     }
 
-    // TODO 2 separatne testy pre rozne vysky poplatku
+    @Test
+    public void testCreateFeeBigTranaction() {
+        Fee fee = feeService.createFee("bbb-ccc", "4006064147", BigDecimal.valueOf(99999L));
+
+        assertNotNull(fee);
+        assertThat(fee.getTransactionId(), is("bbb-ccc"));
+        assertThat(fee.getAmount(), is(BigDecimal.valueOf(2l)));
+    }
 
 }
