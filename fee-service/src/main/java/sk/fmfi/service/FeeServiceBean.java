@@ -32,7 +32,7 @@ public class FeeServiceBean implements FeeService {
         fee.setAcno(acno);
         fee.setCreationDate(LocalDateTime.now());
         fee.setAmount(BigDecimal.valueOf(0.01));
-        if (transactionAmount.compareTo(BigDecimal.valueOf(10000l)) > 0) {
+        if (transactionAmount != null && transactionAmount.compareTo(BigDecimal.valueOf(10000l)) > 0) {
             fee.setAmount(BigDecimal.valueOf(2l));
         }
         feeRepository.persist(fee);
