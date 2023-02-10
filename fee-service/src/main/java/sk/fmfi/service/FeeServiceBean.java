@@ -1,7 +1,6 @@
 package sk.fmfi.service;
 
 import io.quarkus.panache.common.Sort;
-import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import sk.fmfi.model.Fee;
 import sk.fmfi.repository.FeeRepository;
@@ -12,10 +11,12 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RequestScoped
-@Log4j2
 public class FeeServiceBean implements FeeService {
+
+    private static final Logger LOG = Logger.getLogger("FeeServiceBean.class");
 
     private final FeeRepository feeRepository;
 
@@ -30,7 +31,7 @@ public class FeeServiceBean implements FeeService {
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
     public Fee createFee(String transactionId, String acno, BigDecimal transactionAmount) {
-        log.info("Creating fee for transactionId={}, acno={}, transactionAmount={}", transactionId, acno, transactionAmount);
+        LOG.info("Creating fee for transactionId=" + transactionId + ", acno=" + acno + ", transactionAmount=" + transactionAmount);
 
         Fee fee = new Fee();
         fee.setTransactionId(transactionId);
@@ -48,6 +49,7 @@ public class FeeServiceBean implements FeeService {
     @Override
     @Transactional(Transactional.TxType.NOT_SUPPORTED)
     public List<Fee> getAllFees() {
+        LOG.info("Getting all fees");
         return feeRepository
                 .findAll(Sort.descending("creationDate"))
                 .range(0, queryBatchSize - 1)
