@@ -1,6 +1,8 @@
 package sk.fmfi.resource;
 
 import io.quarkus.runtime.util.StringUtil;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import sk.fmfi.model.Fee;
 import sk.fmfi.resource.dto.FeeDTO;
 import sk.fmfi.service.FeeService;
@@ -37,7 +39,11 @@ public class FeeResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createFee(FeeDTO feeDTO) {
+    @Operation(
+            description = "Method for fee creation",
+            summary = "Fee creation"
+    )
+    public Response createFee(@RequestBody(description = "data for new fee") FeeDTO feeDTO) {
         service.createFee(feeDTO.getTransactionId(), feeDTO.getAcno(), feeDTO.getTransactionAmount());
         return Response.ok().build();
     }
