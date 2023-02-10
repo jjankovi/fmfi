@@ -1,5 +1,6 @@
 package sk.fmfi.service;
 
+import io.quarkus.panache.common.Sort;
 import lombok.extern.log4j.Log4j2;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import sk.fmfi.model.Fee;
@@ -48,7 +49,8 @@ public class FeeServiceBean implements FeeService {
     @Transactional(Transactional.TxType.NOT_SUPPORTED)
     public List<Fee> getAllFees() {
         return feeRepository
-                .findAll()
+                .findAll(Sort.descending("creationDate"))
+                .range(0, queryBatchSize - 1)
                 .list();
     }
 
