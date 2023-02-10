@@ -47,7 +47,9 @@ public class FeeServiceBean implements FeeService {
     @Override
     @Transactional(Transactional.TxType.NOT_SUPPORTED)
     public List<Fee> getAllFees() {
-        return feeRepository.listAll();
+        return feeRepository
+                .findAll()
+                .list();
     }
 
     @Override
