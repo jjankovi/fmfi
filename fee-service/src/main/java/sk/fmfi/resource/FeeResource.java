@@ -7,6 +7,7 @@ import sk.fmfi.model.Fee;
 import sk.fmfi.resource.dto.FeeDTO;
 import sk.fmfi.service.FeeService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -25,6 +26,7 @@ public class FeeResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("user")
     public Response getFees(@QueryParam("acno") String acno) {
         List<Fee> fees;
 
@@ -39,6 +41,7 @@ public class FeeResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("admin")
     @Operation(
             description = "Method for fee creation",
             summary = "Fee creation"
