@@ -1,6 +1,7 @@
 package sk.fmfi.service;
 
 import lombok.extern.log4j.Log4j2;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import sk.fmfi.model.Fee;
 import sk.fmfi.repository.FeeRepository;
 
@@ -16,6 +17,9 @@ import java.util.List;
 public class FeeServiceBean implements FeeService {
 
     private final FeeRepository feeRepository;
+
+    @ConfigProperty(name = "query.batch.size")
+    private int queryBatchSize;
 
     @Inject
     public FeeServiceBean(FeeRepository feeRepository) {
