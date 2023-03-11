@@ -4,5 +4,5 @@ metadata:
   name: app-configmap
 data:
   query_batch_size: "10"
-  db_url: "jdbc:h2:tcp://172.17.0.1:1521/test"
+  db_url: "jdbc:h2:tcp://host.docker.internal:1521/test"
   db_username: "sa"
